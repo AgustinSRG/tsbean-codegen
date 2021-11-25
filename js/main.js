@@ -37,12 +37,22 @@ window.App = new Vue({
             return "";
         },
 
+        classExists: function (id) {
+            for (var i = 0; i < this.outputClasses.length; i++) {
+                if (this.outputClasses[i].id === id) {
+                    return true;
+                }
+            }
+            return false;
+        },
+
         onUpdateInputCode: function () {
             if (!this.inputText) {
                 this.outputClasses = [];
                 this.outputClass = "";
                 this.outputText = "";
             }
+
             var classes = [];
             var error = null;
 
@@ -57,13 +67,38 @@ window.App = new Vue({
 
             if (error) {
                 this.outputText = error.message;
+                this.outputClasses = [];
+                this.outputClass = "";
             } else {
-                this.outputText = JSON.stringify(classes, null, 4);
+                this.outputClasses = classes.map(function (c) {
+                    return {
+                        id: c.name,
+                        name: firstUpper(toCamelCase(c.name)),
+                        fields: c.fields,
+                    };
+                });
+                if (!this.classExists(this.outputClass)) {
+                    if (this.outputClasses.length > 0) {
+                        this.outputClass = this.outputClasses[0].id;
+                    } else {
+                        this.outputClass = "";
+                    }
+                }
+                this.onUpdateOutputClass();
             }
         },
 
         onUpdateOutputClass: function () {
-
+            if (this.outputClasses.length === 0) {
+                return;
+            }
+            for (var i = 0; i < this.outputClasses.length; i++) {
+                if (this.outputClasses[i].id === this.outputClass) {
+                    this.outputText = generateBeanClass(this.outputClasses[i]);
+                    return;
+                }
+            }
+            this.outputText = "";
         },
     },
 });
