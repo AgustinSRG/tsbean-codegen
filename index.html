@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code generator for tsbean-orm</title>
 
+    <link rel="shortcut icon" type="image/ico" href="./favicon.ico" />
+
     <link rel="stylesheet" href="./css/text-transform.min.css" />
     <link rel="stylesheet" href="./css/main.min.css" />
 
@@ -19,24 +21,28 @@
     <script type="text/javascript" src="./js/sql-parser.min.js" defer></script>
 
     <script type="text/javascript" src="./js/main.min.js" defer></script>
-    
+
 </head>
 
 <body>
     <div id="app" class="main-container">
         <div class="text-transform">
             <div class="tt-side tt-side-from">
-                <div class="tt-side-header"><span>FROM:</span><select v-model="inputType" class="tt-select tt-from" @change="onUpdateInputCode">
+                <div class="tt-side-header"><span>FROM:</span><select v-model="inputType" class="tt-select tt-from"
+                        @change="onUpdateInputCode">
                         <option v-for="it in inputTypes" :value="it.id">{{it.name}}</option>
                     </select></div>
-                <div class="tt-side-body"><textarea class="tt-textarea tt-input" v-model="inputText" :placeholder="getPlaceholder(inputType)" @input="onUpdateInputCode"></textarea></div>
+                <div class="tt-side-body"><textarea class="tt-textarea tt-input" v-model="inputText"
+                        :placeholder="getPlaceholder(inputType)" @input="onUpdateInputCode"></textarea></div>
             </div>
             <div class="tt-side tt-side-to">
-                <div class="tt-side-header"><span>CLASS:</span><select v-model="outputClass" class="tt-select tt-to" @change="onUpdateOutputClass">
+                <div class="tt-side-header"><span>CLASS:</span><select v-model="outputClass" class="tt-select tt-to"
+                        @change="onUpdateOutputClass">
                         <option :value="''">--- Select a Class ---</option>
                         <option v-for="ot in outputClasses" :value="ot.id">{{ot.name}}</option>
                     </select></div>
-                <div class="tt-side-body"><textarea class="tt-textarea tt-output" readonly="readonly" v-model="outputText"></textarea></div>
+                <div class="tt-side-body"><textarea class="tt-textarea tt-output" readonly="readonly"
+                        v-model="outputText"></textarea></div>
             </div>
         </div>
     </div>
