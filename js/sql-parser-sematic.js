@@ -276,6 +276,8 @@ SQLSemanticParser.prototype.next = function (word, type) {
                                 type: "",
                                 defaultVal: null,
                             };
+                        } else if (word === ")") {
+                            this.expecting = "end";
                         }
                     }
                     break;
