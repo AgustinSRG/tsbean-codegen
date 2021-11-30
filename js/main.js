@@ -70,6 +70,7 @@ window.App = new Vue({
                 this.outputClasses = [];
                 this.outputClass = "";
             } else {
+                this.outputText = "";
                 this.outputClasses = classes.map(function (c) {
                     return {
                         id: c.name,
