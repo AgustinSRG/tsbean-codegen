@@ -67,6 +67,17 @@ window.generateBeanClass = function (table) {
 
     code.push('');
 
+    // Interface
+    code.push('interface ' + table.name + 'Row {');
+    for (var i = 0; i < table.fields.length; i++) {
+        var field = table.fields[i];
+
+        code.push('    ' + toCamelCase(field.name) + '?: ' + javascriptTypeFromEnforced(field.type) + ';');
+    }
+    code.push('}');
+
+    code.push('');
+
     // Class start
     code.push('export class ' + table.name + ' extends DataModel {');
     code.push('');
@@ -85,7 +96,7 @@ window.generateBeanClass = function (table) {
     code.push('');
 
     // Contructor
-    code.push('    constructor(data: GenericRow) {');
+    code.push('    constructor(data: ' + table.name + 'Row) {');
 
     code.push('        // First, we call DataModel constructor ');
     code.push('        super(DATA_SOURCE, TABLE, PRIMARY_KEY);');
