@@ -13,8 +13,8 @@ var SEM_CREATE_TABLE_KNOWN = 6;
 var SQL_TYPES = {
     "BIT": "boolean",
     "BOOLEAN": "boolean",
+    "TINYINT": "boolean",
 
-    "TINYINT": "int",
     "SMALLINT": "int",
     "INT": "int",
     "BIGINT": "int",
@@ -22,6 +22,7 @@ var SQL_TYPES = {
     "DECIMAL": "number",
     "NUMERIC": "number",
     "FLOAT": "number",
+    "DOUBLE": "number",
     "REAL": "number",
 
     "DATE": "date",

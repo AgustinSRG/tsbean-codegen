@@ -25,7 +25,7 @@ window.firstUpper = function (str) {
 
 function findPrimaryKey(table) {
     if (table.fields.length > 0) {
-        return table.fields[0].name;
+        return table.fields[0];
     } else {
         return "";
     }
@@ -57,24 +57,13 @@ window.generateBeanClass = function (table) {
     code.push('');
 
     // Import tsbean-orm
-    code.push('import { DataModel, enforceType, GenericRow, DataSource, DataFinder, DataFilter, OrderBy, SelectOptions } from "tsbean-orm";');
+    code.push('import { DataModel, enforceType, TypedRow, DataSource, DataFinder, DataFilter, OrderBy, SelectOptions, DataUpdate } from "tsbean-orm";');
     code.push('');
 
     // Consts
     code.push('const DATA_SOURCE = DataSource.DEFAULT;');
     code.push('const TABLE = "' + table.id + '";');
-    code.push('const PRIMARY_KEY = "' + toCamelCase(pk) + '";');
-
-    code.push('');
-
-    // Interface
-    code.push('interface ' + table.name + 'Row {');
-    for (var i = 0; i < table.fields.length; i++) {
-        var field = table.fields[i];
-
-        code.push('    ' + toCamelCase(field.name) + '?: ' + javascriptTypeFromEnforced(field.type) + ';');
-    }
-    code.push('}');
+    code.push('const PRIMARY_KEY = "' + toCamelCase(pk.name) + '";');
 
     code.push('');
 
@@ -83,7 +72,7 @@ window.generateBeanClass = function (table) {
     code.push('');
 
     // Finder
-    code.push('    public static finder = new DataFinder<' + table.name + '>(DATA_SOURCE, TABLE, PRIMARY_KEY, (data: GenericRow) => { return new ' + table.name + '(data) });');
+    code.push('    public static finder = new DataFinder<' + table.name + ', ' + javascriptTypeFromEnforced(pk.type) + '>(DATA_SOURCE, TABLE, PRIMARY_KEY, (data: TypedRow<' + table.name + '>) => { return new ' + table.name + '(data) });');
     code.push('');
 
     // Fields
@@ -96,7 +85,7 @@ window.generateBeanClass = function (table) {
     code.push('');
 
     // Contructor
-    code.push('    constructor(data: ' + table.name + 'Row) {');
+    code.push('    constructor(data: TypedRow<' + table.name + '>) {');
 
     code.push('        // First, we call DataModel constructor ');
     code.push('        super(DATA_SOURCE, TABLE, PRIMARY_KEY);');
