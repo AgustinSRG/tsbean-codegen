@@ -45,6 +45,20 @@ function javascriptTypeFromEnforced(t) {
     }
 }
 
+function defaultValueByType(t) {
+    switch (t) {
+        case "int":
+        case "number":
+            return "0"
+        case "boolean":
+            return "false";
+        case "date":
+            return "new Date(0)";
+        default:
+            return "''"
+    }
+}
+
 window.generateBeanClass = function (table) {
     var code = [];
 
@@ -100,7 +114,7 @@ window.generateBeanClass = function (table) {
     for (var i = 0; i < table.fields.length; i++) {
         var field = table.fields[i];
 
-        code.push('        this.' + toCamelCase(field.name) + ' = enforceType(data.' + toCamelCase(field.name) + ', "' + field.type + '");');
+        code.push('        this.' + toCamelCase(field.name) + ' = enforceType(data.' + toCamelCase(field.name) + ', "' + field.type + '") || ' + defaultValueByType(field.type) + ';');
     }
 
     code.push('');
